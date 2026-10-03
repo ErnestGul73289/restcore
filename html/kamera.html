@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restcore - Ziutek AI 🏋️‍♂️</title>
+    <script src="../js/storage/local-storage.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/camera.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="app-topbar">
+    <a class="topbar-brand" href="index.html">RESTCORE<span>.</span></a>
+    <nav class="topbar-nav" aria-label="Nawigacja główna">
+        <a href="index.html"><i class="bi bi-house-door" aria-hidden="true"></i> Pulpit</a>
+        <a href="baza_cwiczen.html"><i class="bi bi-calendar-check" aria-hidden="true"></i> Baza ćwiczeń</a>
+        <a href="postep.html"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i> Postępy</a>
+        <a class="active" href="kamera.html"><i class="bi bi-camera-video" aria-hidden="true"></i> Kamera</a>
+        <a href="kontakt.html"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> Kontakt</a>
+    </nav>
+</header>
+
+
+
+<main id="main-wrapper">
+    <header class="mb-4">
+        <h1 class="fw-bold">TRENER ZIUTEK AI 🤖</h1>
+        <p class="text-muted">Stań tak, aby kamera widziała całą Twoją sylwetkę.</p>
+    </header>
+
+    <div class="session-controls">
+        <select id="exercise-select" class="exercise-select shadow-sm">
+            <option value="squat">Przysiady (Nogi/Plecy)</option>
+            <option value="lateral_raises">Wznosy ramion (Barki)</option>
+            <option value="bicep_curls">Biceps (Ramiona)</option>
+            <option value="pushups">Pompki (Klatka/Triceps)</option>
+        </select>
+        <button class="finish-btn shadow-sm" id="finish-workout" disabled>ZAKOŃCZ TRENING</button>
+    </div>
+
+    <div class="workspace">
+        <div class="instruction-container shadow" id="instruction-container">
+            <h3>Jak wykonać poprawnie</h3>
+            <video id="instruction-video" autoplay loop muted playsinline></video>
+        </div>
+
+        <div class="ai-container shadow">
+            <video id="input_video" playsinline></video>
+            <canvas id="output_canvas" width="1280" height="720"></canvas>
+            <div class="camera-start-overlay" id="camera-start-overlay">
+                <button type="button" class="camera-start-button" id="camera-start-button">▶ URUCHOM KAMERĘ</button>
+            </div>
+            
+            <div id="alert-overlay">POPRAW TECHNIKĘ!</div>
+
+            <div id="ui-overlay">
+                <div class="stat-label">Powtórzenia:</div>
+                <div id="rep-count" class="stat-value">0</div>
+                <div class="stat-label mt-2">Poprawne:</div>
+                <div id="correct-count" class="stat-value">0</div>
+            </div>
+
+            <div class="range-indicator">
+                <div id="progress-container">
+                    <div id="progress-bar"></div>
+                </div>
+                <div class="rep-tag">ZAKRES RUCHU</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="status">Naciśnij „Uruchom kamerę”, aby rozpocząć.</div>
+</main>
+
+<div id="summary-modal">
+    <h2 class="fw-bold mb-4">PODSUMOWANIE</h2>
+    <div id="total-stats"></div>
+    <div id="accuracy-score"></div>
+    <button id="new-session" class="btn btn-lg w-100">NOWA SESJA</button>
+</div>
+
+<script src="../js/camera/pose-trainer.js"></script>
+
+
+
+</body>
+</html>

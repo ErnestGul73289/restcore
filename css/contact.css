@@ -1,0 +1,86 @@
+:root {
+            --brand-yellow: #8DA47E;
+            --brand-blue: #8DA47E;
+            --brand-white: #FFFFFF;
+            --text-dark: #FF8C42;
+            --sidebar-width: 200px;
+        }
+
+        body {
+            background: linear-gradient(180deg, rgba(64, 81, 214, 0.188) 0%, var(--brand-white) 500px);
+            background-color: var(--brand-white);
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+
+        #main-wrapper {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- KONTAKT FORM / DOCTOR CARDS --- */
+        .doctor-card {
+            background: white;
+            border: 3px solid var(--brand-blue);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s;
+        }
+
+        .doctor-card:hover {
+            transform: translateX(10px);
+            box-shadow: 5px 5px 0 var(--text-dark);
+        }
+
+        .doctor-avatar {
+            width: 80px;
+            height: 80px;
+            background: #eee;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--brand-blue);
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.7);
+            border: 3px dashed var(--brand-blue);
+            border-radius: 25px;
+            padding: 30px;
+        }
+
+        .form-control {
+            border: 2px solid var(--brand-blue);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .btn-submit {
+            background: var(--brand-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 15px;
+            font-weight: 900;
+            width: 100%;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .badge-status {
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }

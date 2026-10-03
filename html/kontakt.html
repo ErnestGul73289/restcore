@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restcore - Kontakt z Lekarzem</title>
+    <script src="../js/storage/local-storage.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/contact.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="app-topbar">
+    <a class="topbar-brand" href="index.html">RESTCORE<span>.</span></a>
+    <nav class="topbar-nav" aria-label="Nawigacja główna">
+        <a href="index.html"><i class="bi bi-house-door" aria-hidden="true"></i> Pulpit</a>
+        <a href="baza_cwiczen.html"><i class="bi bi-calendar-check" aria-hidden="true"></i> Baza ćwiczeń</a>
+        <a href="postep.html"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i> Postępy</a>
+        <a href="kamera.html"><i class="bi bi-camera-video" aria-hidden="true"></i> Kamera</a>
+        <a class="active" href="kontakt.html"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> Kontakt</a>
+    </nav>
+</header>
+
+
+<main id="main-wrapper">
+    <div class="alert alert-warning" role="status">
+        <strong>Wersja demonstracyjna.</strong> Dane specjalistów są przykładowe. Rezerwacje i wiadomości nie są obsługiwane.
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <h3 class="fw-bold mb-4">TWOI SPECJALIŚCI</h3>
+            
+            <div class="doctor-card">
+                <img src="https://i.pravatar.cc/150?u=doc1" class="doctor-avatar">
+                <div class="flex-grow-1">
+                    <span class="badge-status">DEMO</span>
+                    <h5 class="fw-bold m-0">dr n. med. Jan Kowalski</h5>
+                    <p class="small text-muted mb-2">Fizjoterapeuta sportowy</p>
+                    <button class="btn btn-sm btn-outline-primary fw-bold" disabled>UMÓW WIZYTĘ</button>
+                </div>
+            </div>
+
+            <div class="doctor-card">
+                <img src="https://i.pravatar.cc/150?u=doc2" class="doctor-avatar">
+                <div class="flex-grow-1">
+                    <span class="badge bg-secondary text-white">DEMO</span>
+                    <h5 class="fw-bold m-0">mgr Anna Nowak</h5>
+                    <p class="small text-muted mb-2">Specjalista rehabilitacji kręgosłupa</p>
+                    <button class="btn btn-sm btn-outline-primary fw-bold" disabled>WYŚLIJ WIADOMOŚĆ</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <h3 class="fw-bold mb-4">SZYBKA KONSULTACJA</h3>
+            <div class="contact-form">
+                <p class="small text-muted mb-4">Formularz jest nieaktywny w wersji demonstracyjnej.</p>
+                <form>
+                    <input type="text" class="form-control" placeholder="Temat wiadomości" disabled>
+                    <select class="form-control" disabled>
+                        <option>Wybierz lekarza...</option>
+                        <option>dr n. med. Jan Kowalski</option>
+                        <option>mgr Anna Nowak</option>
+                    </select>
+                    <textarea class="form-control" rows="4" placeholder="Opisz swój problem lub wątpliwość..." disabled></textarea>
+                    <button type="submit" class="btn-submit" disabled>WYŚLIJ WIADOMOŚĆ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+</body>
+</html>

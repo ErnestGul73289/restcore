@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restcore - konto lokalne</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="../js/storage/local-storage.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="account-page">
+<main class="account-shell">
+    <a class="topbar-brand account-brand" href="index.html">RESTCORE<span>.</span></a>
+    <section class="account-card">
+        <h1 class="h3 fw-bold mb-2">Twoje konto</h1>
+        <p class="text-muted mb-4">Zaloguj się lub utwórz konto, aby korzystać z własnego planu ćwiczeń.</p>
+
+        <div class="account-tabs" role="tablist" aria-label="Logowanie lub rejestracja">
+            <button class="account-tab active" id="login-tab" type="button" role="tab" aria-selected="true" aria-controls="login-panel">Logowanie</button>
+            <button class="account-tab" id="register-tab" type="button" role="tab" aria-selected="false" aria-controls="register-panel">Utwórz konto</button>
+        </div>
+
+        <div id="account-status" class="alert d-none" role="alert"></div>
+        <div id="storage-warning" class="alert alert-warning" role="status">
+            Konto i dane ćwiczeń są przechowywane tylko w tej przeglądarce. Nie ma synchronizacji ani odzyskiwania hasła. Osoby mające dostęp do profilu przeglądarki mogą odczytać zapisane dane. Starszy wspólny plan nie zostanie automatycznie przypisany do nowego konta.
+        </div>
+
+        <form id="login-panel" class="account-form" role="tabpanel" aria-labelledby="login-tab">
+            <label for="login-username">Nazwa użytkownika</label>
+            <input id="login-username" name="username" autocomplete="username" required maxlength="24">
+            <label for="login-password">Hasło</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+            <button class="btn btn-primary w-100 mt-4" type="submit">Zaloguj się</button>
+        </form>
+
+        <form id="register-panel" class="account-form d-none" role="tabpanel" aria-labelledby="register-tab">
+            <label for="register-name">Imię lub nazwa wyświetlana</label>
+            <input id="register-name" name="displayName" autocomplete="name" required minlength="2" maxlength="40">
+            <label for="register-username">Nazwa użytkownika</label>
+            <input id="register-username" name="username" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9._\x2d]+" aria-describedby="username-help">
+            <small id="username-help" class="text-muted">3–24 znaki: litery bez polskich znaków, cyfry, kropka, myślnik lub podkreślenie.</small>
+            <label for="register-password">Hasło</label>
+            <input id="register-password" name="password" type="password" autocomplete="new-password" required minlength="8">
+            <label for="register-confirm-password">Powtórz hasło</label>
+            <input id="register-confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required minlength="8">
+            <button class="btn btn-primary w-100 mt-4" type="submit">Utwórz konto</button>
+        </form>
+    </section>
+</main>
+<script src="../js/pages/account.js"></script>
+</body>
+</html>

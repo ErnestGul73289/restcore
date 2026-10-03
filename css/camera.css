@@ -1,0 +1,302 @@
+:root {
+            --brand-blue: #8DA47E;
+            --brand-white: #FFFFFF;
+            --text-dark: #FF8C42;
+            --sidebar-width: 200px;
+        }
+
+        body {
+            background: linear-gradient(180deg, rgba(64, 81, 214, 0.1) 0%, var(--brand-white) 500px);
+            background-color: var(--brand-white);
+            margin: 0; min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+       
+       #main-wrapper {
+            padding: 40px;
+            transition: margin-left 0.4s;
+            text-align: center;
+        }
+
+        /* --- WORKSPACE LAYOUT --- */
+        .workspace {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start; /* Zmienione ze 'stretch', by wideo nie rozciągało się dziwnie w pionie */
+            gap: 30px;
+            width: 100%; /* DODANO: Gwarantuje poprawne wyśrodkowanie wewnątrz main-wrapper */
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        /* Panel wideo instruktażowego */
+        .instruction-container {
+            width: 400px;
+            background: #1a1a1a;
+            border-radius: 30px;
+            border: 6px solid var(--brand-blue);
+            padding: 15px;
+            display: none; /* Ukryte domyślnie, pokazane jeśli film istnieje */
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+
+        .instruction-container h3 {
+            color: var(--brand-white);
+            font-size: 1.8rem; /* POWIĘKSZONO z 1.2rem */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 1.5px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Dodano delikatny cień, żeby napis lepiej "odcinał się" od tła */
+        }
+
+        .instruction-container video {
+            width: 100%;
+            border-radius: 15px;
+            background: #000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Główny kontener AI */
+        .ai-container {
+            flex: 1;
+            min-width: 600px;
+            max-width: 1000px;
+            background: #1a1a1a;
+            border-radius: 30px;
+            border: 6px solid var(--brand-blue);
+            padding: 15px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+
+        .camera-start-overlay {
+            position: absolute;
+            inset: 15px;
+            display: grid;
+            place-items: center;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 1100;
+        }
+
+        .camera-start-overlay[hidden] { display: none; }
+
+        .camera-start-button {
+            padding: 14px 28px;
+            border: 0;
+            border-radius: 14px;
+            background: var(--text-dark);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 800;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .camera-start-button:disabled { opacity: 0.7; cursor: wait; }
+
+        #output_canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+        }
+
+        #input_video { display: none; }
+        #correct-count { color: #2ecc71; }
+
+        /* Wielki Alert dla błędu (Czytelny z 2 metrów) */
+        #alert-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: #ff3333;
+            text-shadow: 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 0 0 40px rgba(255, 51, 51, 0.9);
+            z-index: 1000;
+            text-align: center;
+            width: 90%;
+            display: none;
+            pointer-events: none;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        /* Nakładka statystyk */
+        #ui-overlay {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 20px;
+            border-radius: 20px;
+            border-left: 6px solid var(--text-dark);
+            text-align: left;
+            backdrop-filter: blur(5px);
+            min-width: 180px;
+        }
+        .stat-label { font-size: 0.8rem; color: #aaa; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .stat-value { font-size: 2.5rem; font-weight: 900; color: var(--text-dark); display: block; line-height: 1.1; }
+
+        .range-indicator {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 50%;
+        }
+        /* Pasek postępu (zakres ruchu) */
+        #progress-container {
+            position: absolute;
+            inset: 0 0 0 auto;
+            width: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+        }
+        #progress-bar {
+            width: 100%;
+            height: 0%; 
+            background: linear-gradient(to top, var(--text-dark), #ffb380);
+            position: absolute;
+            bottom: 0;
+            transition: height 0.1s linear;
+        }
+        .rep-tag {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: 900;
+            font-size: 0.7rem;
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+            opacity: 0.6;
+            white-space: nowrap;
+        }
+
+        /* Kontrolki sesji */
+        .session-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .exercise-select {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--brand-blue);
+            font-weight: 700;
+            background: white;
+            color: var(--brand-blue);
+            font-size: 1.1rem;
+        }
+        .finish-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 12px;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+        .finish-btn:hover { background: #b02a37; transform: scale(1.05); }
+
+        #status {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--brand-blue);
+            text-transform: uppercase;
+        }
+
+        /* Modal podsumowania */
+        #summary-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            border: 5px solid var(--brand-blue);
+            z-index: 3000;
+            text-align: center;
+            box-shadow: 0 0 100px rgba(0,0,0,0.4);
+            color: #333;
+        }
+        #summary-modal h2 { color: var(--brand-blue); }
+        #total-stats { margin-bottom: 20px; font-size: 1.2rem; text-align: left; }
+        .summary-rep-item { margin-bottom: 10px; }
+        .summary-correct-count { color: #00ff88; }
+        #accuracy-score {
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            font-size: 2.5rem;
+            font-weight: 900;
+        }
+        #new-session {
+            border-radius: 15px;
+            background: var(--brand-blue);
+            color: white;
+            font-weight: 800;
+        }
+        
+        @media (max-width: 992px) {
+            .ai-container { min-width: 0; width: 100%; }
+            .instruction-container { width: 100%; max-width: 600px; }
+        }
+
+        @media (max-width: 680px) {
+            #main-wrapper { text-align: left; }
+            .session-controls { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; }
+            .exercise-select,
+            .finish-btn { min-height: 48px; width: 100%; font-size: 1rem; }
+            .ai-container {
+                flex: 1 1 100%;
+                min-width: 0 !important;
+                width: 100%;
+                padding: 8px;
+                border-width: 4px;
+                border-radius: 18px;
+            }
+            #output_canvas { border-radius: 10px; }
+            .camera-start-overlay { inset: 8px; border-radius: 10px; }
+            .camera-start-button { max-width: calc(100% - 20px); padding: 12px 18px; font-size: 0.95rem; }
+            #ui-overlay { top: 14px; left: 14px; min-width: 0; padding: 9px 11px; border-left-width: 4px; border-radius: 12px; }
+            .stat-label { font-size: 0.58rem; letter-spacing: 0.04em; }
+            .stat-value { font-size: 1.35rem; }
+            .range-indicator { right: 14px; width: 34px; height: 42%; }
+            #progress-container { width: 12px; }
+            .rep-tag { font-size: 0.55rem; }
+            #alert-overlay { font-size: clamp(1.35rem, 7vw, 2.2rem); }
+            #status { margin: 14px auto 0; max-width: 100%; font-size: clamp(1rem, 5vw, 1.35rem); line-height: 1.3; overflow-wrap: anywhere; }
+            #summary-modal {
+                width: calc(100vw - 28px);
+                max-width: 480px;
+                max-height: calc(100dvh - 28px);
+                overflow-y: auto;
+                padding: 22px 18px;
+                border-width: 3px;
+                border-radius: 20px;
+            }
+            #summary-modal h2 { font-size: 1.4rem; }
+            #total-stats { font-size: 1rem !important; }
+            #accuracy-score { font-size: 1.8rem !important; }
+        }

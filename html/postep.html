@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restcore - Postępy</title>
+    <script src="../js/storage/local-storage.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="app-topbar">
+    <a class="topbar-brand" href="index.html">RESTCORE<span>.</span></a>
+    <nav class="topbar-nav" aria-label="Nawigacja główna">
+        <a href="index.html"><i class="bi bi-house-door" aria-hidden="true"></i> Pulpit</a>
+        <a href="baza_cwiczen.html"><i class="bi bi-calendar-check" aria-hidden="true"></i> Baza ćwiczeń</a>
+        <a class="active" href="postep.html"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i> Postępy</a>
+        <a href="kamera.html"><i class="bi bi-camera-video" aria-hidden="true"></i> Kamera</a>
+        <a href="kontakt.html"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> Kontakt</a>
+    </nav>
+</header>
+
+
+
+<main id="main-wrapper">
+    <header class="mb-4">
+        <h1 class="fw-bold">MOJE POSTĘPY</h1>
+    </header>
+
+    <div class="stat-card shadow-sm mb-4">
+        <div class="week-navigation">
+            <button class="btn btn-outline-secondary" id="previous-week" aria-label="Poprzedni tydzień">‹</button>
+            <h5 class="fw-bold mb-0 text-center" id="week-label"></h5>
+            <button class="btn btn-outline-secondary" id="next-week" aria-label="Następny tydzień">›</button>
+        </div>
+        <div class="week-days" id="week-days"></div>
+        <h4 class="fw-bold" id="selected-day-label"></h4>
+        <p class="text-muted small">Dodaj ćwiczenia własne lub wybierz pozycję z Bazy ćwiczeń, aby zaplanować ją na wybrany dzień.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4 text-center">
+            <div class="stat-card shadow-sm">
+                <h5 class="fw-bold mb-4">CEL NA WYBRANY DZIEŃ</h5>
+                <div class="progress-circle" id="progress-circle-bg">
+                    <div class="progress-inner" id="progress-text">0%</div>
+                </div>
+                <h3 id="progress-stats" class="fw-bold mt-4 mb-0">0 / 0</h3>
+                <p class="text-muted small fw-bold">ĆWICZEŃ WYKONANYCH</p>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="stat-card shadow-sm">
+                <h5 class="fw-bold mb-3">ĆWICZENIA W PLANIE</h5>
+                <div class="input-group plan-input-group mb-4">
+                    <input type="text" id="exercise-input" class="form-control plan-entry" placeholder="Wpisz własne ćwiczenie...">
+                    <button class="btn plan-add-button" id="add-btn" type="button" aria-label="Dodaj własne ćwiczenie">DODAJ</button>
+                </div>
+                <div class="input-group catalog-input-group mb-3">
+                    <select id="catalog-exercise" class="form-select plan-entry" aria-label="Wybierz ćwiczenie z Bazy ćwiczeń">
+                        <option value="">Wybierz ćwiczenie z Bazy ćwiczeń...</option>
+                    </select>
+                    <button class="btn plan-add-button" id="add-catalog-btn" type="button" aria-label="Dodaj ćwiczenie z Bazy ćwiczeń">DODAJ</button>
+                </div>
+                <div id="exercise-feedback" class="small mb-3" role="status" aria-live="polite" hidden></div>
+                <div id="exercise-list"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="../js/storage/schedule.js"></script>
+<script src="../js/data/exercise-catalog.js"></script>
+<script src="../js/pages/progress.js"></script>
+
+</body>
+</html>

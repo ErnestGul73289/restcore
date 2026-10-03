@@ -1,0 +1,134 @@
+:root {
+            --brand-yellow: #8DA47E;
+            --brand-blue: #8DA47E;
+            --brand-white: #FFFFFF;
+            --text-dark: #FF8C42;
+            --sidebar-width: 200px;
+        }
+
+        body {
+            background: linear-gradient(180deg, rgba(64, 81, 214, 0.188) 0%, var(--brand-white) 500px);
+            background-color: var(--brand-white);
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        
+        /* --- LAYOUT --- */
+        #main-wrapper {
+            padding: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            margin-bottom: 30px;
+        }
+
+        /* --- FILTRY --- */
+        .filter-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: var(--brand-white);
+            border: 2px solid var(--brand-blue);
+            color: var(--brand-blue);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-filter.active, .btn-filter:hover {
+            background: var(--brand-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(141, 164, 126, 0.3);
+        }
+
+        /* --- SIATKA ĆWICZEŃ --- */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .exercise-card {
+            background: white;
+            border: 3px solid var(--brand-blue);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 10px 10px 0 var(--text-dark);
+        }
+
+        .exercise-card.hidden {
+            display: none;
+        }
+
+        .exercise-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--brand-blue);
+        }
+
+        .exercise-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .exercise-category {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .exercise-title {
+            font-weight: 900;
+            color: var(--brand-blue);
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+
+        .btn-play {
+            background: var(--text-dark);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            font-weight: 900;
+            margin-top: auto;
+            transition: opacity 0.2s;
+        }
+
+        .btn-play:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            #main-wrapper { padding: 20px; }
+            .exercise-grid { grid-template-columns: 1fr; }
+        }
