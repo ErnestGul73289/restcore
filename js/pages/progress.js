@@ -3,6 +3,10 @@
     const addExerciseButton = document.getElementById('add-btn');
     const catalogSelect = document.getElementById('catalog-exercise');
     const addCatalogButton = document.getElementById('add-catalog-btn');
+    const seriesSelect = document.getElementById('series-program');
+    const addSeriesButton = document.getElementById('add-series-btn');
+    const clearSelectedDaysButton = document.getElementById('clear-selected-days-btn');
+    const exerciseRange = document.getElementById('exercise-range');
     const exerciseFeedback = document.getElementById('exercise-feedback');
     const exerciseList = document.getElementById('exercise-list');
     const progressText = document.getElementById('progress-text');
@@ -12,6 +16,7 @@
     let schedule = window.RehabSchedule.load();
     let selectedDate = window.RehabSchedule.dateKey(new Date());
     let weekStart = getWeekStart(new Date());
+    const selectedDeletionDates = new Set();
     let feedbackTimeout;
 
     window.RehabExercises.forEach(exercise => {
@@ -19,6 +24,13 @@
         option.value = exercise.name;
         option.textContent = `${exercise.name} — ${exercise.categoryLabel}`;
         catalogSelect.appendChild(option);
+    });
+
+    (window.RehabExerciseSeries || []).forEach(program => {
+        const option = document.createElement('option');
+        option.value = program.name;
+        option.textContent = `${program.name} — ${program.categoryLabel}`;
+        seriesSelect.appendChild(option);
     });
 
     function getWeekStart(date) {
@@ -74,6 +86,29 @@
             const dateKey = window.RehabSchedule.dateKey(date);
             const exercisesForDay = schedule[dateKey] || [];
 
+            const dayCell = document.createElement('div');
+            dayCell.className = 'week-day-cell';
+
+            const deleteChoice = document.createElement('label');
+            deleteChoice.className = 'week-day-delete-choice';
+            const deleteCheckbox = document.createElement('input');
+            deleteCheckbox.type = 'checkbox';
+            deleteCheckbox.className = 'form-check-input';
+            deleteCheckbox.checked = selectedDeletionDates.has(dateKey);
+            deleteCheckbox.disabled = dateKey < todayKey;
+            deleteCheckbox.setAttribute('aria-label', `Zaznacz ${formatDate(dateKey, { weekday: 'long', day: 'numeric', month: 'long' })} do usunięcia`);
+            deleteCheckbox.addEventListener('change', () => {
+                if (deleteCheckbox.checked) {
+                    selectedDeletionDates.add(dateKey);
+                } else {
+                    selectedDeletionDates.delete(dateKey);
+                }
+                updateDeletionControls();
+            });
+            const deleteChoiceText = document.createElement('span');
+            deleteChoiceText.textContent = 'Usuń';
+            deleteChoice.append(deleteCheckbox, deleteChoiceText);
+
             const dayButton = document.createElement('button');
             dayButton.type = 'button';
             dayButton.className = `week-day${dateKey === selectedDate ? ' selected' : ''}`;
@@ -97,8 +132,18 @@
                 selectedDate = dateKey;
                 render();
             });
-            weekDays.appendChild(dayButton);
+            dayCell.append(deleteChoice, dayButton);
+            weekDays.appendChild(dayCell);
         }
+        updateDeletionControls();
+    }
+
+    function updateDeletionControls() {
+        const count = selectedDeletionDates.size;
+        clearSelectedDaysButton.disabled = count === 0;
+        document.getElementById('selected-days-status').textContent = count
+            ? `Zaznaczono ${count} ${count === 1 ? 'dzień' : 'dni'} do usunięcia.`
+            : 'Nie zaznaczono dni do usunięcia.';
     }
 
     function createExerciseItem(exercise, index, exercises) {
@@ -192,18 +237,106 @@
         renderProgress(exercises);
     }
 
+    function getTargetDateKeys() {
+        const rangeDays = Number(exerciseRange.value) || 1;
+        const [year, month, day] = selectedDate.split('-').map(Number);
+        const startDate = new Date(year, month - 1, day);
+        const targetDates = [];
+
+        for (let offset = 0; offset < rangeDays; offset += 1) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + offset);
+            targetDates.push(window.RehabSchedule.dateKey(date));
+        }
+
+        return targetDates.filter(dateKey => dateKey >= getTodayKey());
+    }
+
     function addExercise(name) {
-        if (selectedDate < getTodayKey()) {
-            render();
+        const targetDates = getTargetDateKeys();
+        let addedCount = 0;
+
+        targetDates.forEach(dateKey => {
+            if (window.RehabSchedule.addExercise(dateKey, name)) {
+                addedCount += 1;
+            }
+        });
+
+        if (addedCount === 0) {
+            showExerciseFeedback('To ćwiczenie jest już zaplanowane we wszystkich wybranych dniach.', true);
             return false;
         }
-        if (!window.RehabSchedule.addExercise(selectedDate, name)) {
-            showExerciseFeedback('To ćwiczenie jest już zaplanowane na wybrany dzień.', true);
-            return false;
-        }
-        showExerciseFeedback('Dodano ćwiczenie do planu.');
+
+        const rangeDays = Number(exerciseRange.value) || 1;
+        const message = rangeDays === 1
+            ? 'Dodano ćwiczenie do planu.'
+            : `Dodano ćwiczenie na ${addedCount} z ${targetDates.length} wybranych dni.`;
+        showExerciseFeedback(message);
         render();
         return true;
+    }
+
+    function addSeriesProgram() {
+        const programName = seriesSelect.value;
+        if (!programName) {
+            showExerciseFeedback('Wybierz serię treningową z listy.', true);
+            return;
+        }
+
+        const program = (window.RehabExerciseSeries || []).find(item => item.name === programName);
+        if (!program) {
+            showExerciseFeedback('Nie znaleziono wybranej serii treningowej.', true);
+            return;
+        }
+
+        const targetDates = getTargetDateKeys();
+        let addedExercises = 0;
+
+        targetDates.forEach(dateKey => {
+            program.items.forEach(item => {
+                addedExercises += window.RehabSchedule.addExerciseEntries(dateKey, item.name, item.count, true);
+            });
+        });
+
+        if (addedExercises === 0) {
+            showExerciseFeedback('Ta seria jest już zaplanowana we wszystkich wybranych dniach.', true);
+            return;
+        }
+
+        const rangeDays = Number(exerciseRange.value) || 1;
+        const message = rangeDays === 1
+            ? `Dodano serię „${program.name}” do planu.`
+            : `Dodano serię „${program.name}” na ${targetDates.length} dni.`;
+
+        showExerciseFeedback(message);
+        seriesSelect.value = '';
+        render();
+    }
+
+    function clearSelectedDays() {
+        const targetDates = Array.from(selectedDeletionDates).sort();
+        if (targetDates.length === 0) {
+            showExerciseFeedback('Zaznacz co najmniej jeden dzień do usunięcia.', true);
+            return;
+        }
+
+        const exerciseCount = targetDates.reduce((count, dateKey) => count + (schedule[dateKey]?.length || 0), 0);
+        if (exerciseCount === 0) {
+            showExerciseFeedback('W zaznaczonych dniach nie ma ćwiczeń do usunięcia.', true);
+            return;
+        }
+        if (!window.confirm(`Czy na pewno usunąć wszystkie ćwiczenia (${exerciseCount}) z ${targetDates.length} zaznaczonych dni?`)) {
+            return;
+        }
+
+        targetDates.forEach(dateKey => {
+            delete schedule[dateKey];
+        });
+
+        window.RehabSchedule.save(schedule);
+        selectedDeletionDates.clear();
+        showExerciseFeedback(`Usunięto ćwiczenia z zaznaczonych dni (${exerciseCount}).`);
+        render();
     }
 
     function addCustomExercise() {
@@ -226,6 +359,8 @@
         if (event.key === 'Enter') addCustomExercise();
     });
     addCatalogButton.addEventListener('click', addCatalogExercise);
+    addSeriesButton.addEventListener('click', addSeriesProgram);
+    clearSelectedDaysButton.addEventListener('click', clearSelectedDays);
 
     document.getElementById('previous-week').addEventListener('click', () => {
         if (window.RehabSchedule.dateKey(weekStart) <= window.RehabSchedule.dateKey(getWeekStart(new Date()))) return;

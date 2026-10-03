@@ -16,32 +16,31 @@
         /* --- SIDEBAR --- */
        
        #main-wrapper {
-            padding: 40px;
+            padding: 40px 32px;
             transition: margin-left 0.4s;
-            text-align: center;
+            text-align: left;
         }
 
         /* --- WORKSPACE LAYOUT --- */
         .workspace {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start; /* Zmienione ze 'stretch', by wideo nie rozciągało się dziwnie w pionie */
+            display: grid;
+            grid-template-columns: minmax(260px, 380px) minmax(0, 1fr);
+            align-items: stretch;
             gap: 30px;
-            width: 100%; /* DODANO: Gwarantuje poprawne wyśrodkowanie wewnątrz main-wrapper */
-            max-width: 1400px;
+            width: 100%;
+            max-width: 1500px;
             margin: 0 auto;
-            flex-wrap: wrap;
         }
 
         /* Panel wideo instruktażowego */
         .instruction-container {
-            width: 400px;
+            width: 100%;
+            max-width: 380px;
             background: #1a1a1a;
             border-radius: 30px;
             border: 6px solid var(--brand-blue);
             padding: 15px;
-            display: none; /* Ukryte domyślnie, pokazane jeśli film istnieje */
+            display: none;
             flex-direction: column;
             align-items: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.25);
@@ -49,17 +48,25 @@
 
         .instruction-container h3 {
             color: var(--brand-white);
-            font-size: 1.8rem; /* POWIĘKSZONO z 1.2rem */
+            font-size: 1.8rem;
             margin-bottom: 20px;
             text-transform: uppercase;
             font-weight: 900;
             text-align: center;
             letter-spacing: 1.5px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Dodano delikatny cień, żeby napis lepiej "odcinał się" od tła */
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #main-wrapper > header h1,
+        #main-wrapper > header p {
+            letter-spacing: -0.04em;
         }
 
         .instruction-container video {
             width: 100%;
+            height: auto;
+            max-height: 72vh;
+            object-fit: cover;
             border-radius: 15px;
             background: #000;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
@@ -67,9 +74,9 @@
 
         /* Główny kontener AI */
         .ai-container {
-            flex: 1;
-            min-width: 600px;
-            max-width: 1000px;
+            width: 100%;
+            min-width: 0;
+            max-width: none;
             background: #1a1a1a;
             border-radius: 30px;
             border: 6px solid var(--brand-blue);
@@ -259,12 +266,19 @@
         }
         
         @media (max-width: 992px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            .instruction-container {
+                max-width: 100%;
+                width: 100%;
+            }
             .ai-container { min-width: 0; width: 100%; }
-            .instruction-container { width: 100%; max-width: 600px; }
         }
 
         @media (max-width: 680px) {
             #main-wrapper { text-align: left; }
+            .workspace { gap: 18px; }
             .session-controls { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; }
             .exercise-select,
             .finish-btn { min-height: 48px; width: 100%; font-size: 1rem; }

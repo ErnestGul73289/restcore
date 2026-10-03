@@ -33,12 +33,18 @@
         <p class="text-muted">Kliknij kategorię, aby przefiltrować zestawienia.</p>
     </header>
 
-    <div class="filter-container">
+    <div class="library-tabs" aria-label="Widok bazy ćwiczeń">
+        <button class="library-tab active" data-view="exercises" type="button">Ćwiczenia</button>
+        <button class="library-tab" data-view="series" type="button">Serie treningowe</button>
+    </div>
+
+    <div class="filter-container" id="exerciseFilters">
         <button class="btn-filter active" data-category="all">Wszystkie</button>
         <button class="btn-filter" data-category="plecy">Kręgosłup</button>
         <button class="btn-filter" data-category="kolana">Kolana/Nogi</button>
         <button class="btn-filter" data-category="barki">Barki</button>
         <button class="btn-filter" data-category="rece">Ręce</button>
+        <button class="btn-filter" data-category="klatka">Klatka / Górna część</button>
     </div>
 
     <div class="exercise-grid" id="exerciseGrid"></div>

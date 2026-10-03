@@ -37,9 +37,11 @@
             <h5 class="fw-bold mb-0 text-center" id="week-label"></h5>
             <button class="btn btn-outline-secondary" id="next-week" aria-label="Następny tydzień">›</button>
         </div>
+        <p class="small text-muted mb-2">Zaznacz pole „Usuń” przy każdym dniu, z którego chcesz skasować ćwiczenia.</p>
         <div class="week-days" id="week-days"></div>
+        <p class="selected-days-status small text-muted mb-2" id="selected-days-status" aria-live="polite">Nie zaznaczono dni do usunięcia.</p>
         <h4 class="fw-bold" id="selected-day-label"></h4>
-        <p class="text-muted small">Dodaj ćwiczenia własne lub wybierz pozycję z Bazy ćwiczeń, aby zaplanować ją na wybrany dzień.</p>
+        <p class="text-muted small">Dodaj ćwiczenia własne lub wybierz pozycję z Bazy ćwiczeń, aby zaplanować je na wybrany dzień lub na kilka kolejnych dni.</p>
     </div>
 
     <div class="row g-4">
@@ -65,6 +67,23 @@
                         <option value="">Wybierz ćwiczenie z Bazy ćwiczeń...</option>
                     </select>
                     <button class="btn plan-add-button" id="add-catalog-btn" type="button" aria-label="Dodaj ćwiczenie z Bazy ćwiczeń">DODAJ</button>
+                </div>
+                <div class="input-group series-input-group mb-3">
+                    <select id="series-program" class="form-select plan-entry" aria-label="Wybierz serię treningową">
+                        <option value="">Wybierz serię treningową...</option>
+                    </select>
+                    <button class="btn plan-add-button" id="add-series-btn" type="button" aria-label="Dodaj serię treningową">DODAJ</button>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="exercise-range">Dodaj na</label>
+                    <select id="exercise-range" class="form-select plan-entry" aria-label="Zakres dodawania ćwiczenia">
+                        <option value="1">tylko wybrany dzień</option>
+                        <option value="7">następne 7 dni</option>
+                        <option value="30">następne 30 dni</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn clear-plan-button" id="clear-selected-days-btn" type="button" aria-label="Usuń wszystkie ćwiczenia z zaznaczonych dni" disabled>USUŃ Z ZAZNACZONYCH DNI</button>
                 </div>
                 <div id="exercise-feedback" class="small mb-3" role="status" aria-live="polite" hidden></div>
                 <div id="exercise-list"></div>
